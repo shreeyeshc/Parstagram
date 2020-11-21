@@ -11,7 +11,8 @@ import AlamofireImage
 
  class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-
+    let myReloadControl = UIRefreshControl()
+    
     @IBOutlet weak var tableView: UITableView!
     
     var posts = [PFObject]()
@@ -19,6 +20,8 @@ import AlamofireImage
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       // myReloadControl.addTarget(self, action: #selector(posts), for: .valueChanged)
+        self.tableView.refreshControl = myReloadControl
         tableView.delegate = self
         tableView.dataSource = self
         // Do any additional setup after loading the view.
@@ -29,7 +32,7 @@ import AlamofireImage
         
         let query = PFQuery(className: "Posts")
         query.includeKey("author")
-        query.limit = 20
+        query.limit = 30
         
         query.findObjectsInBackground { (posts, error) in
             if posts != nil {
